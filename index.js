@@ -10,14 +10,17 @@ const postRoute = require("./routes/posts");
 const registerRoute = require("./routes/register");
 
 dotenv.config();
-
-mongoose.connect(
-  process.env.MONGO_URL,
-  { useNewUrlParser: true, useUnifiedTopology: true },
-  () => {
-    console.log("Connected to MongoDB");
+const connectDB= async() =>{
+  try{
+      await mongoose.connect(process.env.MONGO_URL, {useNewUrlParser:true, useUnifiedTopology:true, useCreateIndex: true , useFindAndModify: false})
+      console.log('connected to mongo')
+  }catch(err){
+      console.error(err.message)
+      process.exit(1)
   }
-);
+}
+
+connectDB()
 
 //middleware
 app.use(express.json());
